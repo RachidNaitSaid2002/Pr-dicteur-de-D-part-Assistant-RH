@@ -6,3 +6,15 @@ scikit-learn == 1.4.2
 scipy
 seaborn
 imbalanced-learn == 0.14
+
+huggingface_hub
+dotenv
+sqlalchemy
+pydantic
+fastapi
+uvicorn
+psycopg2-binary
+passlib
+argon2_cffi
+python-jose
+pytest

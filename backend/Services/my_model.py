@@ -11,7 +11,7 @@ def predict(data):
 
 if __name__ == '__main__':
     Fake_Data = {
-        'Age': 29,
+        'Age': 50,
         'BusinessTravel': 'Travel_Rarely',
         'Department': 'Research & Development',
         'Education': 1,
