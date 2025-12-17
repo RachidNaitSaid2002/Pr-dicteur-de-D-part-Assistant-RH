@@ -1,0 +1,8 @@
+matplotlib
+numpy
+pandas
+pytest
+scikit-learn == 1.4.2
+scipy
+seaborn
+imbalanced-learn == 0.14
