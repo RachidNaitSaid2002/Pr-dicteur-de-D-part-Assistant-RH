@@ -40,7 +40,7 @@ export default function AgentNetworkPage() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [searchTerm, setSearchTerm] = useState("")
 
-    const [Age, setAge] = useState()
+    const [Age, setAge] = useState("")
     const [BusinessTravel, setBusinessTravel] = useState("")
     const [Department, setDepartment] = useState("Research & Development")
     const [Education, setEducation] = useState("")
@@ -277,7 +277,7 @@ export default function AgentNetworkPage() {
                 <div className="flex gap-3">
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                         <Button
-                            className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white shadow-lg shadow-orange-900/20 border-0"
+                            className="cursor-pointer  bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white shadow-lg shadow-orange-900/20 border-0"
                             onClick={() => setIsAddModalOpen(true)}
                         >
                             <Plus className="w-4 h-4 mr-2" />
@@ -444,7 +444,7 @@ export default function AgentNetworkPage() {
                             initial={{ scale: 0.95, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.95, opacity: 0 }}
-                            className="w-full max-w-4xl"
+                            className="w-full max-w-6xl"
                         >
                             <Card className="bg-neutral-900 border-neutral-800 shadow-2xl overflow-hidden">
                                 <CardHeader className="flex flex-row items-center justify-between border-b border-neutral-800 bg-neutral-950 p-6">
@@ -460,7 +460,7 @@ export default function AgentNetworkPage() {
                                     <Button
                                         variant="ghost"
                                         onClick={() => setIsAddModalOpen(false)}
-                                        className="text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-full w-10 h-10 p-0"
+                                        className="cursor-pointer text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-full w-10 h-10 p-0"
                                     >
                                         <X className="w-5 h-5" />
                                     </Button>
@@ -609,8 +609,8 @@ export default function AgentNetworkPage() {
                                         </div>
 
                                         <div className="flex justify-end pt-8 border-t border-neutral-800 gap-4">
-                                            <Button type="button" variant="ghost" onClick={() => setIsAddModalOpen(false)} className="text-neutral-400 hover:text-white hover:bg-neutral-800">Cancel</Button>
-                                            <Button type="submit" className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white shadow-lg shadow-orange-900/20 border-0 px-8" disabled={isSubmitting}>
+                                            <Button type="button" variant="ghost" onClick={() => setIsAddModalOpen(false)} className="cursor-pointer text-neutral-400 hover:text-white hover:bg-neutral-800">Cancel</Button>
+                                            <Button type="submit" className="cursor-pointer bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white shadow-lg shadow-orange-900/20 border-0 px-8" disabled={isSubmitting}>
                                                 {isSubmitting ? "Processing..." : "Confirm Entry"}
                                             </Button>
                                         </div>

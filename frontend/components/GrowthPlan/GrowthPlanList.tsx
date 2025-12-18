@@ -109,9 +109,7 @@ export function GrowthPlanList() {
                                 Retention Strategy
                             </div>
                             <p className="text-sm text-white/60 line-clamp-3">
-                                {
-                                    plan.retention_strategy
-                                }
+                                {plan.retention_strategy}
                             </p>
                         </div>
 

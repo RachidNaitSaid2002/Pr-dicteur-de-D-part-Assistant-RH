@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import AgentNetworkPage from "../../components/employee/page"
 import { useRouter } from "next/navigation"
 import {GrowthPlanList} from "@/components/GrowthPlan/GrowthPlanList"
+import { DotScreenShader } from "@/components/ui/dot-shader-background";
 
 
 export default function TacticalDashboard() {
@@ -102,6 +103,19 @@ export default function TacticalDashboard() {
 
                 {/* Dashboard Content */}
                 <div className="flex-1 overflow-auto bg-black">
+                    {activeSection !== "Employees" && activeSection !== "GrowthPlan" && 
+                        <div className="h-[100%] flex flex-col gap-8 items-center justify-center relative">
+                            <div className="absolute inset-0">
+                                <DotScreenShader />
+                            </div>
+                            <h1 className="text-6xl md:text-7xl font-light tracking-tight mix-blend-exclusion text-white whitespace-nowrap pointer-events-none">
+                                Welcome to RetentionAI
+                            </h1>
+                            <p className="text-lg md:text-xl font-light text-center text-white mix-blend-exclusion max-w-2xl leading-relaxed pointer-events-none">
+                                Welcome to RetentionAI, your AI-powered retention assistant. We help you improve employee retention by providing personalized retention strategies and insights.
+                            </p>
+                        </div>
+                    }
                     {activeSection === "Employees" && <AgentNetworkPage />}
                     {activeSection === "GrowthPlan" && <GrowthPlanList />}
                 </div>
