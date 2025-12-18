@@ -21,3 +21,4 @@ class ValData(BaseModel):
     YearsAtCompany: int
     YearsInCurrentRole: int
     YearsWithCurrManager: int
+

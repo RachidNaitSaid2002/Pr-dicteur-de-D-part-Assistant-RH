@@ -2,7 +2,9 @@ from Database.db import engine,SessionLocal,Base
 from fastapi import FastAPI, HTTPException, Response, status, Depends, Cookie
 from Models.users import User
 from Models.employes import Employee
+from Models.growth_plan import GrowthPlan
 from Schemas.users import UserCreate, UserLogin
+from Schemas.growth_plan import GrowthPlanResponse
 from fastapi.security import HTTPBearer, HTTPBasicCredentials
 from dotenv import load_dotenv
 import os
@@ -13,6 +15,8 @@ from Services.my_model import predict
 from Schemas.val_data import ValData
 from Services.gemini import gemini
 import json
+from Schemas.employes import EmployeeResponse
+from typing import List
 
 load_dotenv()
 
@@ -47,7 +51,6 @@ def Signup(user: UserCreate):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-
     return {'message':'User Register Successfully'}
 
 
@@ -99,21 +102,22 @@ def prediction(employees: list[ValData], token: HTTPBasicCredentials = Depends(b
                 "YearsAtCompany": employee_data.YearsAtCompany,
                 "YearsInCurrentRole": employee_data.YearsInCurrentRole,
                 "YearsWithCurrManager": employee_data.YearsWithCurrManager,
-                "id_user":user_id,
-                "Attrition": prediction_result
+                "Attrition": prediction_result,
+                "id_user": user_id,
             }
 
             db_prediction = Employee(**Prediction)
             db.add(db_prediction)
             db.commit()
             db.refresh(db_prediction)
+
             if not prediction_result:
                 raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="No predictions could be generated.")
     
     return db_prediction
 
 # GrowthPlan --------------------------------------------------------------------------- :
-@app.post('/GrowthPlan/{id}')
+@app.get('/GrowthPlan/{id}')
 def growth_plan(id: int, token: HTTPBasicCredentials = Depends(bearer_scheme)):
     
     if verify_jwt(token.credentials) is None:
@@ -150,10 +154,70 @@ def growth_plan(id: int, token: HTTPBasicCredentials = Depends(bearer_scheme)):
         "YearsWithCurrManager": employee.YearsWithCurrManager,
         "Attrition": employee.Attrition
     }
+
     growth_plan = gemini(employee_data)
     Growth = json.loads(growth_plan)
 
-    return Growth
-    
+    Growthplan = {
+        "id_employee": id,
+        "id_user": user_id,
+        "growth_plan": Growth["growth_plan"],
+        "stay_interview_script": Growth["stay_interview_script"],
+        "risk_assessment": Growth["risk_assessment"],
+        "retention_strategy": Growth["retention_strategy"]
+    }
 
+    db_growth_plan = GrowthPlan(**Growthplan)
+    db.add(db_growth_plan)
+    db.commit()
+    db.refresh(db_growth_plan)
+
+    return HTTPException(status_code=status.HTTP_201_CREATED, detail="Growth plan generated successfully.")
+
+
+# Get User Growth Plans ----------------------------------------------------------- :
+@app.get('/GrowthPlans')
+def get_user_growth_plans(token: HTTPBasicCredentials = Depends(bearer_scheme)):
+
+    if verify_jwt(token.credentials) is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials.")
     
+    email = verify_jwt(token.credentials)
+    user = db.query(User).filter(User.email == email).first()
+    
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    growth_plans = db.query(GrowthPlan).filter(GrowthPlan.id_user == user.id).all()
+    return growth_plans
+
+# Get Employees ----------------------------------------------------------------------- :
+@app.get('/employees', response_model=List[EmployeeResponse])
+def get_employees(token: HTTPBasicCredentials = Depends(bearer_scheme)):
+    if verify_jwt(token.credentials) is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials.")
+    email = verify_jwt(token.credentials)
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    
+    employees = db.query(Employee).filter(Employee.id_user == user.id).all()
+    return employees
+
+# Delete ---------------------------------------------------------- :
+@app.delete('/employees/{id}')
+def delete_employee(id: int, token: HTTPBasicCredentials = Depends(bearer_scheme)):
+    if verify_jwt(token.credentials) is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials.")
+    email = verify_jwt(token.credentials)
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    
+    employee = db.query(Employee).filter(Employee.id == id, Employee.id_user == user.id).first()
+    if not employee:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Employee not found")
+    
+    db.delete(employee)
+    db.commit()
+    return {'message': 'Employee deleted successfully'}

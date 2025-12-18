@@ -35,3 +35,4 @@ class Employee(Base):
 
     # Relationship
     owner = relationship("User", back_populates="employees")
+    growth_plans = relationship("GrowthPlan", back_populates="employee")
