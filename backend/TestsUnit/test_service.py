@@ -2,6 +2,7 @@ from unittest.mock import patch, MagicMock
 import json
 from backend.Services.gemini import gemini_func
 
+@patch.dict("os.environ", {"HF_TOKEN": "fake-token"})
 @patch("backend.Services.gemini.InferenceClient")
 def test_gemini_func_simple(mock_client_class):
     sample_data = {"Age": 30, "Education": 2}
@@ -19,8 +20,5 @@ def test_gemini_func_simple(mock_client_class):
 
     result = gemini_func(sample_data)
 
-    assert isinstance(result, str)
-
     data = json.loads(result)
-    assert "risk_assessment" in data
     assert data["risk_assessment"] == "Test this function"
