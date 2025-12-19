@@ -1,18 +1,10 @@
-import joblib
-import pandas as pd
+import pytest
+from backend.Services.my_model import predict
 
-def predict(data):
-    Model_4_test = '../../model/Model.pkl'
-    model = '../model/Model.pkl'
-    model = joblib.load(Model_4_test)
-    pd_data = pd.DataFrame([data])
-    if model.predict(pd_data)[0] == 1:
-        return "yes"
-    else :
-        return "no"
 
-if __name__ == '__main__':
-    Fake_Data = {
+@pytest.fixture
+def Data():
+    Fake_data = {
         'Age': 50,
         'BusinessTravel': 'Travel_Rarely',
         'Department': 'Research & Development',
@@ -34,4 +26,10 @@ if __name__ == '__main__':
         'YearsInCurrentRole': 3,
         'YearsWithCurrManager': 3
     }
-    print(predict(Fake_Data))
+    return Fake_data
+
+def test_predict(Data):
+    prediction = predict(Data)
+    assert prediction == 'yes'
+
+    
