@@ -13,7 +13,7 @@ from Auth.auth import get_password_hash, get_uer, verify_jwt, create_jwt, verify
 from fastapi.responses import JSONResponse
 from Services.my_model import predict
 from Schemas.val_data import ValData
-from Services.gemini import gemini
+from Services.gemini import gemini_func
 import json
 from Schemas.employes import EmployeeResponse
 from typing import List
@@ -155,7 +155,7 @@ def growth_plan(id: int, token: HTTPBasicCredentials = Depends(bearer_scheme)):
         "Attrition": employee.Attrition
     }
 
-    growth_plan = gemini(employee_data)
+    growth_plan = gemini_func(employee_data)
     Growth = json.loads(growth_plan)
 
     Growthplan = {

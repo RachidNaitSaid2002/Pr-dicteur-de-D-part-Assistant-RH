@@ -3,7 +3,7 @@ import pandas as pd
 
 def predict(data):
     Model_4_test = '../../model/Model.pkl'
-    model = '../model/Model.pkl'
+    model_path = '../model/Model.pkl'
     model = joblib.load(Model_4_test)
     pd_data = pd.DataFrame([data])
     if model.predict(pd_data)[0] == 1:
