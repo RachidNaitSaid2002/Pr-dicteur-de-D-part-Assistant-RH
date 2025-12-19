@@ -1,10 +1,8 @@
 import joblib
 import pandas as pd
-from pathlib import Path
 
 def predict(data):
-    BASE_DIR = Path(__file__).resolve().parent
-    model_path = BASE_DIR / "../model/Model.pkl"
+    model_path = "../model/Model.pkl"
     model = joblib.load(model_path)
     pd_data = pd.DataFrame([data])
     if model.predict(pd_data)[0] == 1:
