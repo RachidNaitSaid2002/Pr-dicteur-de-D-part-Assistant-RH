@@ -76,6 +76,4 @@ Ce projet est une solution intelligente d'assistance aux Ressources Humaines (RH
 ## Modèle de Machine Learning
 Le modèle a été entraîné sur des données historiques d'employés pour identifier les facteurs clés de départ (satisfaction au travail, équilibre vie pro/perso, salaire, etc.). Le fichier du modèle se trouve dans `backend/model/Model.pkl`.
 
-## Licence
-Ce projet est sous licence MIT.
 
