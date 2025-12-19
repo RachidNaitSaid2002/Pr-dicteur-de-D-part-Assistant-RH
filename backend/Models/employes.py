@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey , DateTime
 from sqlalchemy.orm import relationship
-from Database.db import Base
+from backend.Database.db import Base
 from datetime import datetime
 
 class Employee(Base):

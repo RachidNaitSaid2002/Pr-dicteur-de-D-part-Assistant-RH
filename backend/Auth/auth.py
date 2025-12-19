@@ -2,7 +2,7 @@ from passlib.context import CryptContext
 from jose import jwt, JWTError
 from dotenv import load_dotenv
 from fastapi import HTTPException, status
-from Models.users import User
+from backend.Models.users import User
 from dotenv import load_dotenv
 import os
 

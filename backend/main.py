@@ -1,21 +1,25 @@
-from Database.db import engine,SessionLocal,Base
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from backend.Database.db import engine,SessionLocal,Base
 from fastapi import FastAPI, HTTPException, Response, status, Depends, Cookie
-from Models.users import User
-from Models.employes import Employee
-from Models.growth_plan import GrowthPlan
-from Schemas.users import UserCreate, UserLogin
-from Schemas.growth_plan import GrowthPlanResponse
+from backend.Models.users import User
+from backend.Models.employes import Employee
+from backend.Models.growth_plan import GrowthPlan
+from backend.Schemas.users import UserCreate, UserLogin
+from backend.Schemas.growth_plan import GrowthPlanResponse
 from fastapi.security import HTTPBearer, HTTPBasicCredentials
 from dotenv import load_dotenv
 import os
 from fastapi.middleware.cors import CORSMiddleware
-from Auth.auth import get_password_hash, get_uer, verify_jwt, create_jwt, verify_password
+from backend.Auth.auth import get_password_hash, get_uer, verify_jwt, create_jwt, verify_password
 from fastapi.responses import JSONResponse
-from Services.my_model import predict
-from Schemas.val_data import ValData
-from Services.gemini import gemini_func
+from backend.Services.my_model import predict
+from backend.Schemas.val_data import ValData
+from backend.Services.gemini import gemini_func
 import json
-from Schemas.employes import EmployeeResponse
+from backend.Schemas.employes import EmployeeResponse
 from typing import List
 
 load_dotenv()

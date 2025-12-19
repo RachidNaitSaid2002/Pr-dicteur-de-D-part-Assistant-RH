@@ -1,8 +1,15 @@
 import joblib
 import pandas as pd
+import os
+
+
 
 def predict(data):
-    model_path = "../model/Model.pkl"
+    # Get the directory where my_model.py is located
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    model_path = os.path.join(BASE_DIR, "model", "Model.pkl")
+
+    # Then load it
     model = joblib.load(model_path)
     pd_data = pd.DataFrame([data])
     if model.predict(pd_data)[0] == 1:
